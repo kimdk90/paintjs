@@ -1,4 +1,4 @@
 # paintjs
 Painting Board made with VanillaJs
 
-canvas를 이용한 그림판 만들기
+canvas를 이용한 그림판 만들기 with nico
