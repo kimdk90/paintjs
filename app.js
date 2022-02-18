@@ -1,5 +1,7 @@
 const canvas = document.getElementById("jsCanvas");
 const colors = document.getElementsByClassName("controls_color");
+const range = document.getElementById("jsRange");
+const fillBtn = document.getElementById("jsMode");
 const ctx = canvas.getContext("2d");
 
 
@@ -49,3 +51,17 @@ function handleColorClick(e) {
     ctx.strokeStyle = selColor;
 };
 Array.from(colors).forEach(color => color.addEventListener('click', handleColorClick));
+
+
+function handleRangeChange(e) {
+    const rangeSize = e.target.value;
+    ctx.lineWidth = rangeSize;
+} 
+
+if(range) {
+    range.addEventListener("input", handleRangeChange);
+}
+
+jsMode.addEventListener("click", (e) => {
+    console.log(e);
+});
