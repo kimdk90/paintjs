@@ -2,16 +2,21 @@ const canvas = document.getElementById("jsCanvas");
 const colors = document.getElementsByClassName("controls_color");
 const range = document.getElementById("jsRange");
 const fillBtn = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
 const ctx = canvas.getContext("2d");
 
+const CANVAS_SIZE = 700;
+const INITIAL_COLOR = "#2c2c2c";
 
-canvas.width = 700;
-canvas.height = 700;
+canvas.width = CANVAS_SIZE;
+canvas.height = CANVAS_SIZE;
 
-ctx.strokeStyle = "#2c2c2c";
+ctx.strokeStyle = INITIAL_COLOR;
+ctx.fillStyle = INITIAL_COLOR;
 ctx.lineWidth = 2.5;
 
 let painting = false;
+let filling = false;
 
 function stopPainting(e) {
     painting = false;
@@ -43,12 +48,25 @@ if(canvas) {
     canvas.addEventListener("mousedown", startPainting);
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
+    canvas.addEventListener("click", handleCanvasClick);
+    canvas.addEventListener("contextmenu", handleCM);
 }
 
+function handleCM(e) {
+    e.preventDefault();
+    console.log("우클릭방지");
+}
+
+function handleCanvasClick() {
+    if(filling) {
+        ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    }
+}
 
 function handleColorClick(e) {
     const selColor = e.target.style.backgroundColor;
     ctx.strokeStyle = selColor;
+    ctx.fillStyle = selColor;
 };
 Array.from(colors).forEach(color => color.addEventListener('click', handleColorClick));
 
@@ -62,6 +80,20 @@ if(range) {
     range.addEventListener("input", handleRangeChange);
 }
 
-jsMode.addEventListener("click", (e) => {
-    console.log(e);
+fillBtn.addEventListener("click", (e) => {
+    if(filling == true) {
+        fillBtn.innerText = "FILL"; 
+        filling = false;
+    } else if(filling == false) {
+        fillBtn.innerText = "PAINT";
+        filling = true;
+    }
+});
+
+saveBtn.addEventListener("click", () => {
+    const img = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = img;
+    link.download = "image[canvasJs]";
+    link.click();
 });
