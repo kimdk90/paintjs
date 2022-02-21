@@ -3,6 +3,10 @@ const colors = document.getElementsByClassName("controls_color");
 const range = document.getElementById("jsRange");
 const fillBtn = document.getElementById("jsMode");
 const saveBtn = document.getElementById("jsSave");
+const loadBtn = document.getElementById("jsLoad");
+const jsFile = document.getElementById("jsFile");
+const seletImage = document.getElementById("img");
+
 const ctx = canvas.getContext("2d");
 
 const CANVAS_SIZE = 700;
@@ -96,4 +100,20 @@ saveBtn.addEventListener("click", () => {
     link.href = img;
     link.download = "image[canvasJs]";
     link.click();
+});
+
+loadBtn.addEventListener("click", () => {
+    jsFile.click();
+});
+
+jsFile.addEventListener("change", (e) => {
+    const file = e.target.files[0]; //선택된 파일
+    
+    const img = new Image();
+
+    img.src = URL.createObjectURL(file);
+
+    img.onload = function() {
+        ctx.drawImage(img, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    };
 });
